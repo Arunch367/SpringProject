@@ -7,7 +7,7 @@ import "../../AdminDashboardcss/Dashboard.css";
 import { toast } from "react-hot-toast";
 
 function AdminDashboard() {
-  const adminId = sessionStorage.getItem("adminId");
+  const adminId = localStorage.getItem("userId");
 
   const [books, setBooks] = useState([]);
   const [editID, setEditID] = useState(-1);

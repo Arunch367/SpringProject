@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import "../styles/AdminLogin.css";
 
-
 function ForgotPassword() {
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
@@ -19,7 +18,8 @@ function ForgotPassword() {
       })
       .then((data) => {
         // handle the response from the server
-        sessionStorage.setItem('email', email);
+        sessionStorage.setItem("email", email);
+        localStorage.setItem("email", email);
         toast.success("OTP code sent");
         // console.log(data);
         navigate("/verify_otp");
@@ -30,13 +30,15 @@ function ForgotPassword() {
       });
   };
   const handleSubmit = (event) => {
-    event.preventDefault()
-    confirmEmail()
-  }
+    event.preventDefault();
+    confirmEmail();
+  };
   return (
     <div class="AdminLogin-body">
       <div class="topnav">
-        <Link class="active" to="/">Home</Link>
+        <Link class="active" to="/">
+          Home
+        </Link>
         <Link to="/login">Login</Link>
       </div>
       <div class="flex-container">
@@ -59,7 +61,9 @@ function ForgotPassword() {
               setEmail(e.target.value);
             }}
           />
-          <button class="btn" type="submit" onClick={handleSubmit}>Send Otp code</button>
+          <button class="btn" type="submit" onClick={handleSubmit}>
+            Send Otp code
+          </button>
         </div>
       </div>
     </div>

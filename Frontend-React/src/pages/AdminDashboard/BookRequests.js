@@ -66,7 +66,7 @@ function BookRequests() {
       });
   };
 
-  const adminId = parseInt(sessionStorage.getItem("adminId"));
+  const adminId = parseInt(localStorage.getItem("adminId"));
   const handleAccept = async (borrowId) => {
     try {
       // Fetch borrow request details to get the book ID

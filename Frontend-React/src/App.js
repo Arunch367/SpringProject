@@ -1,31 +1,31 @@
-import './App.css';
-import Landing from './pages/Landing';
+import "./App.css";
+import Landing from "./pages/Landing";
 
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import AdminLogin from './pages/AdminDashboard/AdminLogin';
-import Login from './pages/UserDashboard/Login';
-import DashboardNav from './pages/UserDashboard/DashboardNav';
-import ForgotPassword from './pages/ForgotPassword';
-import MyAccount from './pages/UserDashboard/MyAccount';
-import Dashboard from './pages/UserDashboard/Dashboard';
-import Error from './pages/404';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import AdminLogin from "./pages/AdminDashboard/AdminLogin";
+import Login from "./pages/UserDashboard/Login";
+import DashboardNav from "./pages/UserDashboard/DashboardNav";
+import ForgotPassword from "./pages/ForgotPassword";
+import MyAccount from "./pages/UserDashboard/MyAccount";
+import Dashboard from "./pages/UserDashboard/Dashboard";
+import Error from "./pages/404";
 
-import AdminDashboardNav from './pages/AdminDashboard/AdminDashboardNav';
-import AddBooks from './pages/AdminDashboard/AddBooks';
-import AdminDashboard from './pages/AdminDashboard/AdminDashboard';
-import IssueBooks from './pages/AdminDashboard/IssueBooks';
-import BookIssueHistory from './pages/AdminDashboard/bookuserhistory'
-import Setting from './pages/AdminDashboard/Setting';
-import AddAdmin from './pages/AdminDashboard/addadmin';
-import Users from './pages/AdminDashboard/Users';
-import LogOut from './pages/AdminDashboard/logout';
-import UserLogOut from './pages/UserDashboard/userlogout';
+import AdminDashboardNav from "./pages/AdminDashboard/AdminDashboardNav";
+import AddBooks from "./pages/AdminDashboard/AddBooks";
+import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
+import IssueBooks from "./pages/AdminDashboard/IssueBooks";
+import BookIssueHistory from "./pages/AdminDashboard/bookuserhistory";
+import Setting from "./pages/AdminDashboard/Setting";
+import AddAdmin from "./pages/AdminDashboard/addadmin";
+import Users from "./pages/AdminDashboard/Users";
+import LogOut from "./pages/AdminDashboard/logout";
+import UserLogOut from "./pages/UserDashboard/userlogout";
 
-import VerifyOtp from './pages/VerifyOtp';
-import ResetPasswordOTP from './pages/ResetPasswordOTP';
-import BookRequests from './pages/AdminDashboard/BookRequests';
-import MyBorrowedBook from './pages/UserDashboard/MyBorrowedBook';
-
+import VerifyOtp from "./pages/VerifyOtp";
+import ResetPasswordOTP from "./pages/ResetPasswordOTP";
+import BookRequests from "./pages/AdminDashboard/BookRequests";
+import MyBorrowedBook from "./pages/UserDashboard/MyBorrowedBook";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -33,23 +33,49 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Landing />} />
-          <Route path="/dashboard" element={<DashboardNav />} >
+
+          {/* User Dashboard Protected Routes */}
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute requiredRole="USER">
+                <DashboardNav />
+              </ProtectedRoute>
+            }
+          >
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/dashboard/myaccount" element={<MyAccount />} />
-            <Route path="/dashboard/myborrowedbooks" element={<MyBorrowedBook />} />
+            <Route
+              path="/dashboard/myborrowedbooks"
+              element={<MyBorrowedBook />}
+            />
             <Route path="/dashboard/userlogout" element={<UserLogOut />} />
           </Route>
 
-          <Route path="/admindashboard" element={<AdminDashboardNav />} >
-            <Route path='/admindashboard' element={<AdminDashboard />} />
-            <Route path='/admindashboard/users' element={<Users />} />
-            <Route path='/admindashboard/addbooks' element={<AddBooks />} />
-            <Route path='/admindashboard/bookrequests' element={<BookRequests />} />
-            <Route path='/admindashboard/issuebooks' element={<IssueBooks />} />
-            <Route path='/admindashboard/bookissuehistory' element={<BookIssueHistory />} />
-            <Route path='/admindashboard/addadmin' element={<AddAdmin />} />
-            <Route path='/admindashboard/logout' element={<LogOut />} />
-            <Route path='/admindashboard/setting' element={<Setting />} />
+          {/* Admin Dashboard Protected Routes */}
+          <Route
+            path="/admindashboard"
+            element={
+              <ProtectedRoute requiredRole="ADMIN">
+                <AdminDashboardNav />
+              </ProtectedRoute>
+            }
+          >
+            <Route path="/admindashboard" element={<AdminDashboard />} />
+            <Route path="/admindashboard/users" element={<Users />} />
+            <Route path="/admindashboard/addbooks" element={<AddBooks />} />
+            <Route
+              path="/admindashboard/bookrequests"
+              element={<BookRequests />}
+            />
+            <Route path="/admindashboard/issuebooks" element={<IssueBooks />} />
+            <Route
+              path="/admindashboard/bookissuehistory"
+              element={<BookIssueHistory />}
+            />
+            <Route path="/admindashboard/addadmin" element={<AddAdmin />} />
+            <Route path="/admindashboard/logout" element={<LogOut />} />
+            <Route path="/admindashboard/setting" element={<Setting />} />
           </Route>
 
           <Route path="/forgotpassword" element={<ForgotPassword />} />

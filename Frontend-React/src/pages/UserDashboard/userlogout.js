@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Link, Outlet } from 'react-router-dom';
-import '../../UserDashboardcss/logout.css';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import "../../UserDashboardcss/logout.css";
 
 function Popup() {
   const [isOpen, setIsOpen] = useState(true);
@@ -10,32 +10,33 @@ function Popup() {
   };
 
   return (
-    <div class="IssuedBook-body">
-      <div class="main">
-        <div className="popup-container">
-          {isOpen && (
+    isOpen && (
+      <div className="IssuedBook-body">
+        <div className="main">
+          <div className="popup-container">
             <div className="popup">
               <div className="popup-content">
-                <h2>Logout</h2>
+                <h2>User Logout</h2>
                 <p>Would you like to logout?</p>
                 <Link to="/dashboard">
                   <button onClick={closePopup}>Cancel</button>
                 </Link>
 
                 <Link
+                  to="/login"
                   onClick={() => {
-                    localStorage.clear(); // clear all items in localStorage
-                    sessionStorage.clear(); // clear all items in sessionStorage
+                    localStorage.clear();
+                    sessionStorage.clear();
                   }}
-                  to="/login/*">
+                >
                   <button onClick={closePopup}>Logout</button>
                 </Link>
               </div>
             </div>
-          )}
+          </div>
         </div>
       </div>
-    </div>
+    )
   );
 }
 

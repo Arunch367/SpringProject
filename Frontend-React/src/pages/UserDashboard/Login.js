@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import ForgotPassword from "../ForgotPassword";
 import { Link, Route, Routes } from "react-router-dom";
 import Home from "../../components/home";
-import { toast } from "react-hot-toast"
+import { toast } from "react-hot-toast";
 import { PasswordInput } from "../../components/PasswordInput";
 
 function Login() {
@@ -30,35 +30,42 @@ function Login() {
     event.preventDefault();
     setErrorMsg("");
     const requestBody = { email: logEmail, password: logPassword };
+
     try {
       const response = await axios.post(
         "http://localhost:8080/login",
         requestBody
       );
       const user = response.data;
-      if (rememberMe) {
-        // Store the user ID and "Remember me" flag in the local storage if "Remember me" is checked
-        localStorage.setItem('userId', user.id);
-        localStorage.setItem('isRememberMe', true);
+
+      localStorage.setItem("userId", user.id);
+      localStorage.setItem("role", "USER"); // Store role (e.g., "USER")
+      localStorage.setItem("isRememberMe", rememberMe);
+
+      sessionStorage.setItem("userId", user.id);
+
+      if (user.role === "ADMIN") {
+        navigate("/admindashboard");
       } else {
-        // Otherwise, store the user ID in the session storage and clear the "Remember me" flag from the local storage
-        localStorage.setItem('userId', user.id);
-        localStorage.setItem('isRememberMe', false);
+        navigate("/dashboard");
       }
-      sessionStorage.setItem("userId", user.id); // Store the user ID in the session storage
-      navigate("/dashboard", { state: user });
-      toast.success("Successfully Sign In")
+
+      toast.success("Successfully Signed In");
     } catch (error) {
       setErrorMsg(error.response?.data?.errorMessage);
-      toast.error("Failed to Sign In")
+      toast.error("Failed to Sign In");
     }
   };
-
   // sign up
   const register = async (event) => {
-
     // Check if any of the input values are empty
-    if (!name || !phoneNumber || !regEmail || !regPassword || !confirmPassword) {
+    if (
+      !name ||
+      !phoneNumber ||
+      !regEmail ||
+      !regPassword ||
+      !confirmPassword
+    ) {
       toast.error("Fill all the fields");
       return;
     }
@@ -66,7 +73,9 @@ function Login() {
     // Validate password using regex pattern
     const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
     if (!passwordRegex.test(regPassword)) {
-      toast.error("Password must contain at least one digit, one lowercase letter, one uppercase letter, and be at least 8 characters long");
+      toast.error(
+        "Password must contain at least one digit, one lowercase letter, one uppercase letter, and be at least 8 characters long"
+      );
       return;
     }
 
@@ -82,7 +91,10 @@ function Login() {
       password: regPassword,
     };
     try {
-      const response = await axios.post("http://localhost:8080/register", requestBody);
+      const response = await axios.post(
+        "http://localhost:8080/register",
+        requestBody
+      );
       toast.success("Successfully Signed up");
       setName("");
       setPhoneNumber("");
@@ -95,15 +107,12 @@ function Login() {
     }
   };
 
-
-  // remember me 
+  // remember me
   const handleRememberMeChange = (event) => {
     setRememberMe(event.target.checked);
   };
 
-
   return (
-
     <div class="login-Body">
       <div class="topnav">
         <Link class="active" to="/">
@@ -241,11 +250,10 @@ function Login() {
                   type="checkbox"
                   checked={rememberMe}
                   name="remember"
-                  onChange={handleRememberMeChange} />
+                  onChange={handleRememberMeChange}
+                />
               </div>
-              <div>
-                Remember Me
-              </div>
+              <div>Remember Me</div>
             </div>
             <button style={{ margin: "10px" }} type="button" onClick={login}>
               Sign In
